@@ -1,12 +1,12 @@
 #include <iostream>
 
 struct Node {
-    int coeff;  // Hệ số của từng hạng tử
-    int exp;    // Số mũ của hạng tử
-    Node* next; // Con trỏ đến node tiếp theo
+    int coeff;  //Hệ số
+    int exp;    //Số mũ
+    Node* next; //Trỏ đến node tiếp theo
 };
 
-// Hàm tạo một node mới
+//Hàm tạo node 
 Node* createNode(int coeff, int exp) {
     Node* newNode = new Node();
     newNode->coeff = coeff;
@@ -15,7 +15,7 @@ Node* createNode(int coeff, int exp) {
     return newNode;
 }
 
-// Hàm thêm node vào cuối danh sách liên kết
+//Hàm thêm node vào cuối dslk
 void appendNode(Node*& poly, int coeff, int exp) {
     Node* newNode = createNode(coeff, exp);
     if (!poly) {
@@ -27,7 +27,7 @@ void appendNode(Node*& poly, int coeff, int exp) {
     }
 }
 
-// Hàm nhập đa thức từ người dùng
+//Hàm nhập đa thức
 void inputPolynomial(Node*& poly) {
     int degree;
     std::cout << "Nhập bậc của đa thức: ";
@@ -37,12 +37,12 @@ void inputPolynomial(Node*& poly) {
         std::cout << "Nhập hệ số cho x^" << i << ": ";
         std::cin >> coeff; // Nhập hệ số cho từng x^i
         if (coeff != 0) {
-            appendNode(poly, coeff, i); // Thêm node vào đa thức nếu hệ số khác 0
+            appendNode(poly, coeff, i); //Thêm node vào đa thức nếu hệ số # 0
         }
     }
 }
 
-// Hàm cộng hai đa thức
+//Hàm cộng đa thức
 Node* addPolynomials(Node* poly1, Node* poly2) {
     Node* result = nullptr;
     while (poly1 || poly2) {
@@ -64,7 +64,7 @@ Node* addPolynomials(Node* poly1, Node* poly2) {
     return result;
 }
 
-// Hàm in đa thức kèm theo địa chỉ của các phần tử (debug)
+//Hàm in đa thức kèm theo địa chỉ của các phần tử (debug)
 void printPolynomialWithDebug(Node* poly) {
     while (poly) {
         std::cout << "Node tại địa chỉ " << poly << ": " << poly->coeff << "x^" << poly->exp;
@@ -79,15 +79,13 @@ int main() {
     Node* poly2 = nullptr;
 
     std::cout << "Nhập đa thức thứ nhất:\n";
-    inputPolynomial(poly1);  // Nhập đa thức thứ nhất
+    inputPolynomial(poly1);  
 
     std::cout << "\nNhập đa thức thứ hai:\n";
-    inputPolynomial(poly2);  // Nhập đa thức thứ hai
+    inputPolynomial(poly2);  
 
-    // Cộng hai đa thức
     Node* result = addPolynomials(poly1, poly2);
 
-    // In kết quả với debug để thấy địa chỉ của các phần tử
     std::cout << "\nĐa thức thứ nhất (kèm địa chỉ từng node):\n";
     printPolynomialWithDebug(poly1);
 
