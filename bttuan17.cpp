@@ -1,6 +1,4 @@
 #include <iostream>
-#include <vector>
-#include <algorithm>
 using namespace std;
 
 struct NutAVL {
@@ -22,7 +20,9 @@ private:
 
     void cap_nhat_chieu_cao(NutAVL* nut) {
         if (nut) {
-            nut->chieu_cao = 1 + max(lay_chieu_cao(nut->trai), lay_chieu_cao(nut->phai));
+            int chieu_cao_trai = lay_chieu_cao(nut->trai);
+            int chieu_cao_phai = lay_chieu_cao(nut->phai);
+            nut->chieu_cao = 1 + (chieu_cao_trai > chieu_cao_phai ? chieu_cao_trai : chieu_cao_phai);
         }
     }
 
@@ -59,20 +59,18 @@ private:
     NutAVL* can_bang_nut(NutAVL* nut) {
         int do_lech = lay_do_lech(nut);
 
-        // Mất cân bằng bên trái
         if (do_lech > 1) {
-            if (lay_do_lech(nut->trai) < 0) { // Trường hợp trái-phải
+            if (lay_do_lech(nut->trai) < 0) {
                 nut->trai = xoay_trai(nut->trai);
             }
-            return xoay_phai(nut); // Trường hợp trái-trái
+            return xoay_phai(nut);
         }
 
-        // Mất cân bằng bên phải
         if (do_lech < -1) {
-            if (lay_do_lech(nut->phai) > 0) { // Trường hợp phải-trái
+            if (lay_do_lech(nut->phai) > 0) {
                 nut->phai = xoay_phai(nut->phai);
             }
-            return xoay_trai(nut); // Trường hợp phải-phải
+            return xoay_trai(nut);
         }
 
         return nut;
@@ -88,26 +86,26 @@ private:
         } else if (gia_tri > nut->gia_tri) {
             nut->phai = chen(nut->phai, gia_tri);
         } else {
-            return nut; // Không cho phép giá trị trùng lặp
+            return nut;
         }
 
         cap_nhat_chieu_cao(nut);
         return can_bang_nut(nut);
     }
 
-    void duyet_trung_tu(NutAVL* nut, vector<int>& ket_qua) {
+    void duyet_trung_tu(NutAVL* nut) {
         if (nut) {
-            duyet_trung_tu(nut->trai, ket_qua);
-            ket_qua.push_back(nut->gia_tri);
-            duyet_trung_tu(nut->phai, ket_qua);
+            duyet_trung_tu(nut->trai);
+            cout << nut->gia_tri << " ";
+            duyet_trung_tu(nut->phai);
         }
     }
 
-    void duyet_tien_tu(NutAVL* nut, vector<int>& ket_qua) {
+    void duyet_tien_tu(NutAVL* nut) {
         if (nut) {
-            ket_qua.push_back(nut->gia_tri);
-            duyet_tien_tu(nut->trai, ket_qua);
-            duyet_tien_tu(nut->phai, ket_qua);
+            cout << nut->gia_tri << " ";
+            duyet_tien_tu(nut->trai);
+            duyet_tien_tu(nut->phai);
         }
     }
 
@@ -118,25 +116,17 @@ public:
         goc = chen(goc, gia_tri);
     }
 
-    void in_cac_buoc(const vector<int>& danh_sach) {
-        for (size_t i = 0; i < danh_sach.size(); ++i) {
+    void in_cac_buoc(int danh_sach[], int kich_thuoc) {
+        for (int i = 0; i < kich_thuoc; ++i) {
             cout << "Bước " << i + 1 << ": Thêm " << danh_sach[i] << endl;
             them(danh_sach[i]);
 
-            vector<int> trung_tu, tien_tu;
-            duyet_trung_tu(goc, trung_tu);
-            duyet_tien_tu(goc, tien_tu);
-
             cout << "Duyệt trung tự: ";
-            for (int val : trung_tu) {
-                cout << val << " ";
-            }
+            duyet_trung_tu(goc);
             cout << endl;
 
             cout << "Duyệt tiên tự: ";
-            for (int val : tien_tu) {
-                cout << val << " ";
-            }
+            duyet_tien_tu(goc);
             cout << endl;
 
             cout << "-------------------------------------" << endl;
@@ -145,8 +135,11 @@ public:
 };
 
 int main() {
-    vector<int> danh_sach = {240, 73, 101, 21, 13, 25, 11, 37, 89, 30, 15, 51};
+    int danh_sach[] = {240, 73, 101, 21, 13, 25, 11, 37, 89, 30, 15, 51};
+    int kich_thuoc = sizeof(danh_sach) / sizeof(danh_sach[0]);
+
     CayAVL cay;
-    cay.in_cac_buoc(danh_sach);
+    cay.in_cac_buoc(danh_sach, kich_thuoc);
+
     return 0;
 }
