@@ -4,10 +4,10 @@
 #include <stack>
 using namespace std;
 
-// So dinh cua do thi
+//So dinh cua do thi
 const int so_dinh = 7;
 
-// Ma tran ke (7x7)
+//Ma tran ke 
 int do_thi[so_dinh][so_dinh] = {
     {0, 1, 0, 1, 1, 0, 1},
     {0, 0, 1, 1, 0, 1, 0},
@@ -18,7 +18,7 @@ int do_thi[so_dinh][so_dinh] = {
     {0, 0, 0, 0, 1, 0, 0}
 };
 
-// Duyet BFS
+//Duyet BFS
 void duyet_BFS(int bat_dau) {
     vector<bool> dinh_da_duyet(so_dinh, false);
     queue<int> hang_doi;
@@ -29,7 +29,7 @@ void duyet_BFS(int bat_dau) {
     while (!hang_doi.empty()) {
         int dinh = hang_doi.front();
         hang_doi.pop();
-        cout << char('a' + dinh) << " "; // Hien thi dinh duoi dang chu cai
+        cout << char('a' + dinh) << " "; //Hien thi dinh duoi dang chu cai
 
         for (int i = 0; i < so_dinh; i++) {
             if (do_thi[dinh][i] && !dinh_da_duyet[i]) {
@@ -41,7 +41,7 @@ void duyet_BFS(int bat_dau) {
     cout << endl;
 }
 
-// Duyet DFS
+//Duyet DFS
 void duyet_DFS(int bat_dau) {
     vector<bool> dinh_da_duyet(so_dinh, false);
     stack<int> ngan_xep;
@@ -54,7 +54,7 @@ void duyet_DFS(int bat_dau) {
 
         if (!dinh_da_duyet[dinh]) {
             dinh_da_duyet[dinh] = true;
-            cout << char('a' + dinh) << " "; // Hien thi dinh duoi dang chu cai
+            cout << char('a' + dinh) << " "; //Hien thi dinh duoi dang chu cai
         }
 
         for (int i = so_dinh - 1; i >= 0; i--) {
@@ -67,12 +67,12 @@ void duyet_DFS(int bat_dau) {
 }
 
 int main() {
-    // Nhap dinh bat dau duyet
+    //Nhap dinh bat dau duyet
     char bat_dau;
     cout << "Nhap dinh bat dau (a-g): ";
     cin >> bat_dau;
 
-    // Duyet BFS va DFS
+    //Duyet BFS va DFS
     duyet_BFS(bat_dau - 'a');
     duyet_DFS(bat_dau - 'a');
 
